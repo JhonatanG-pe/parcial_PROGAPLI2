@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .buscador-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 0;
+        }
+
+        #codigoInput {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        #codigoInput:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .btn-search {
+            padding: 12px 30px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-search:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-search:active {
+            transform: translateY(0);
+        }
+
+        .content {
+            background: white;
+            padding: 30px 40px;
+            min-height: 150px;
+        }
+
+        #resultado {
+            color: #555;
+        }
+
+        #resultado p {
+            margin: 12px 0;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        #resultado b {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .producto-encontrado {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 4px;
+            border-left: 4px solid #3498db;
+        }
+
+        .error-message {
+            background: #fee;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 4px solid #c33;
+            color: #c33;
+            font-size: 14px;
+        }
+
+        .info-message {
+            color: #7f8c8d;
+            font-size: 14px;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .footer {
+            background: white;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 15px 40px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .footer a {
+            text-decoration: none;
+            flex: 1;
+            max-width: 150px;
+        }
+
+        .footer button {
+            width: 100%;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(149, 165, 166, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            .header,
+            .content,
+            .footer {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .btn-search {
+                width: 100%;
+            }
+
+            .footer {
+                flex-direction: column;
+            }
+
+            .footer a {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="buscador-container">
+    <div class="header">
+        <h1>Buscar Producto</h1>
+        <div class="search-box">
+            <input type="text" id="codigoInput" placeholder="Ingrese código del producto">
+            <button class="btn-search" onclick="buscar()">Buscar</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <div id="resultado"></div>
+    </div>
+
+    <div class="footer">
+        <a href="/principal"><button class="btn-primary">Regresar</button></a>
+        <a href="/"><button class="btn-secondary">Salir</button></a>
+    </div>
+</div>
+
+<script>
+    async function buscar() {
+        const codigo = document.getElementById('codigoInput').value.trim();
+        const div    = document.getElementById('resultado');
+
+        if (!codigo) {
+            div.innerHTML = '<p>Por favor ingresa un código.</p>';
+            return;
+        }
+
+        const resp = await fetch('/api/buscar_producto', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ codigo })
+        });
+        const data = await resp.json();
+
+        if (data.encontrado) {
+            div.innerHTML = `
+                <p><b>Código:</b> ${data.codigo}</p>
+                <p><b>Nombre:</b> ${data.nombre}</p>
+                <p><b>Descripción:</b> ${data.descripcion}</p>
+                <p><b>Precio:</b> S/ ${data.precio}</p>
+                <p><b>Stock:</b> ${data.stock}</p>
+                <p><b>Categoría:</b> ${data.categoria}</p>
+            `;
+        } else {
+            div.innerHTML = `<p>${data.mensaje}</p>`;
+        }
+    }
+</script>
+
+</body>
+</html>
